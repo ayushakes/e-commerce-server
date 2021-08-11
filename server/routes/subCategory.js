@@ -12,13 +12,16 @@ const {
   update,
   remove,
   list,
-} = require("../controllers/subCategory"); 
+  getSubCategoryProducts,
+} = require("../controllers/subCategory");
 
 // routes
 router.post("/subCategory", authCheck, adminCheck, create);
-router.get("/subCategories", list);  // not applying middlewares here as this will be public 
+router.get("/subCategories", list); // not applying middlewares here as this will be public
 router.get("/subCategory/:slug", read);
 router.put("/subCategory/:slug", authCheck, adminCheck, update);
 router.delete("/subCategory/:slug", authCheck, adminCheck, remove);
+
+router.get("/subCategory/products/:slug", getSubCategoryProducts);
 
 module.exports = router;

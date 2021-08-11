@@ -1,5 +1,5 @@
 const SubCategory = require("../models/subCategory");
-
+const product = require("../models/product");
 const slugify = require("slugify");
 const { response } = require("express");
 
@@ -64,5 +64,19 @@ exports.remove = async (req, res) => {
     res.json(deleted);
   } catch (err) {
     response.status(400).send("delete sub Category failed at server");
+  }
+};
+
+exports.getSubCategoryProducts = async (req, res) => {
+  try {
+    const subCategory = await SubCategory.find({ slug: req.params.slug });
+    const products = await product
+      .find({ subCategories: subCategory }) // directly finding category matching instead of comparing ids
+      .populate("category")
+      .exec();
+
+    res.json({ subCategory, products });
+  } catch (err) {
+    console.log("error while loading category products ");
   }
 };

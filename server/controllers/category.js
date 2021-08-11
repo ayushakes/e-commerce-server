@@ -3,6 +3,7 @@ const SubCategory = require("../models/subCategory");
 
 const slugify = require("slugify");
 const { response } = require("express");
+const product = require("../models/product");
 
 exports.create = async (req, res) => {
   try {
@@ -71,4 +72,19 @@ exports.getSubCategories = (req, res) => {
     }
     res.json(result);
   });
+};
+
+exports.getCategoryProducts = async (req, res) => {
+  try {
+    const category = await Category.find({ slug: req.params.slug });
+    const products = await product
+      .find({ category: category }) // directly finding category matching instead of comparing ids
+      .populate("category")
+      .populate("postedBy", "_id name") // passing the properties we need
+      .exec();
+
+    res.json({ category, products });
+  } catch (err) {
+    console.log("error while loading category products ");
+  }
 };

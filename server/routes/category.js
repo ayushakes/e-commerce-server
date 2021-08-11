@@ -12,7 +12,8 @@ const {
   update,
   remove,
   list,
-  getSubCategories
+  getSubCategories,
+  getCategoryProducts
 } = require("../controllers/category"); 
 
 // routes
@@ -21,6 +22,8 @@ router.get("/categories", list);  // not applying middlewares here as this will 
 router.get("/category/:slug", read);
 router.put("/category/:slug", authCheck, adminCheck, update);
 router.delete("/category/:slug", authCheck, adminCheck, remove);
-router.get("/category/subcategories/:_id", getSubCategories)
+router.get("/category/subcategories/:_id", getSubCategories);
+
+router.get("/category/products/:slug", getCategoryProducts)
 
 module.exports = router;
